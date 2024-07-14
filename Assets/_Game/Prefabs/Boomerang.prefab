@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8936369157166089499}
   - component: {fileID: 5284371212159358330}
   - component: {fileID: 8950493254991909937}
-  - component: {fileID: 8339580253232061382}
+  - component: {fileID: -5540886055973597959}
   m_Layer: 6
   m_Name: Boomerang
   m_TagString: Weapon
@@ -83,7 +83,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8339580253232061382
+--- !u!114 &-5540886055973597959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,14 +92,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8745803166085326376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933010e0fddf2064cbfda2370cfd3abc, type: 3}
+  m_Script: {fileID: 11500000, guid: 92db748adec353140a210be1f9ee3aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 8950493254991909937}
-  range: 10
-  speed: 4
   weaponVisual: {fileID: 8351361610816473156}
   weaponSO: {fileID: 11400000, guid: ce2ba7076dd3dc442b838fa8ab4a3c3f, type: 2}
+  rotatingSpeed: 360
 --- !u!1001 &8351361610816344772
 PrefabInstance:
   m_ObjectHideFlags: 0

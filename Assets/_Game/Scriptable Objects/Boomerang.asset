@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e16463d4672ab4ca4d96a4a6a3b26d, type: 3}
   m_Name: Boomerang
   m_EditorClassIdentifier: 
-  range: 10
+  range: 2
   speed: 4

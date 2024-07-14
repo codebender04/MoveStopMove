@@ -33,10 +33,7 @@ public class Bot : Character
     {
         return botSight;
     }
-    public void SetBoolAnim(string animName, bool paramValue)
-    {
-        animator.SetBool(animName, paramValue);
-    }
+    
     public void SetDestination(Vector3 destination)
     {
         this.destination = destination;
@@ -56,7 +53,7 @@ public class Bot : Character
     }
     public void StopMovement()
     {
-        animator.SetBool(Constants.ANIM_IDLE, true);
+        SetBoolAnim(Constants.ANIM_IDLE, true);
         SetDestination(transform.position);
     }
     public void ChangeState(IState<Bot> state)
@@ -72,7 +69,6 @@ public class Bot : Character
         {
             currentState.OnEnter(this);
         }
-        Debug.Log(state.ToString());
     }
 
 }

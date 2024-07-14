@@ -15,4 +15,4 @@ MonoBehaviour:
   weaponArray:
   - {fileID: 4436777480652280301, guid: 98a85bf1031c4ca49bcebe4e10f4bc0e, type: 3}
   - {fileID: 6160193945814293063, guid: 18aeb1f9ad272c54aa3dee87dea9cd64, type: 3}
-  - {fileID: 8339580253232061382, guid: a0781187b71e530498b051c178e7803c, type: 3}
+  - {fileID: -5540886055973597959, guid: a0781187b71e530498b051c178e7803c, type: 3}

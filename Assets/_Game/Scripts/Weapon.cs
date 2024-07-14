@@ -6,8 +6,8 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] protected Transform weaponVisual;
-    [SerializeField] private WeaponSO weaponSO;
-    private Character weaponOwner;
+    [SerializeField] protected WeaponSO weaponSO;
+    protected Character weaponOwner;
     private Vector3 startPosition;
     private void Start()
     {

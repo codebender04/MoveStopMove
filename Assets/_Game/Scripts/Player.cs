@@ -67,12 +67,12 @@ public class Player : Character
         {
             rb.velocity = new Vector3(Joystick.Horizontal, rb.velocity.y, Joystick.Vertical) * speed;
             tf.rotation = Quaternion.LookRotation(rb.velocity);
-            animator.SetBool(Constants.ANIM_IDLE, false);
+            SetBoolAnim(Constants.ANIM_IDLE, false);
         }
         else
         {
             rb.velocity = new Vector3 (0f, rb.velocity.y, 0f);
-            animator.SetBool(Constants.ANIM_IDLE, true);
+            SetBoolAnim(Constants.ANIM_IDLE, true);
         }
     }
     private void Grow()

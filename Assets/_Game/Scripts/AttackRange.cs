@@ -10,6 +10,7 @@ public class AttackRange : MonoBehaviour
         if (other.TryGetComponent<Character>(out Character character))
         {
             targetInRangeList.Add(character);
+            character.AddAttackRange(this);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -17,6 +18,7 @@ public class AttackRange : MonoBehaviour
         if (other.TryGetComponent<Character>(out Character character))
         {
             targetInRangeList.Remove(character);
+            character.RemoveAttackRange(this);
         }
     }
     public void RemoveTarget(Character character)

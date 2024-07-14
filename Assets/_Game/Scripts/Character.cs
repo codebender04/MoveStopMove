@@ -11,8 +11,10 @@ public class Character : MonoBehaviour
     [SerializeField] protected Transform weaponThrowPosition;
     [SerializeField] protected Animator animator;
     [SerializeField] private WeaponArraySO weaponArraySO;
-    private float distance;
     protected Character target;
+
+    private float distance;
+    private List<AttackRange> attackRangeList = new List<AttackRange>();
     private void CheckClosestTarget()
     {
         if (attackRange.GetNumberOfTarget() == 0)
@@ -59,6 +61,10 @@ public class Character : MonoBehaviour
     {
         animator.SetBool(Constants.ANIM_ATTACK, false);
     }
+    public void SetBoolAnim(string animName, bool paramValue)
+    {
+        animator.SetBool(animName, paramValue);
+    }
     protected virtual void Update()
     {
         CheckClosestTarget();
@@ -81,5 +87,20 @@ public class Character : MonoBehaviour
                 Destroy(weapon.gameObject);
             }
         }
+    }
+    private void OnDestroy()
+    {
+        foreach (AttackRange attackRange in attackRangeList)
+        {
+            attackRange.RemoveTarget(this);
+        }
+    }
+    public void AddAttackRange(AttackRange attackRange)
+    {
+        attackRangeList.Add(attackRange);
+    }
+    public void RemoveAttackRange(AttackRange attackRange)
+    {
+        attackRangeList.Remove(attackRange);
     }
 }
