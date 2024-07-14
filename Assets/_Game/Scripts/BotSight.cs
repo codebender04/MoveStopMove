@@ -2,33 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackRange : MonoBehaviour
+public class BotSight : MonoBehaviour
 {
-    private List<Character> targetInRangeList = new List<Character>();
+    private List<Character> targetInSightList = new List<Character>();
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Character>(out Character character))
         {
-            targetInRangeList.Add(character);
+            targetInSightList.Add(character);
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<Character>(out Character character))
         {
-            targetInRangeList.Remove(character);
+            targetInSightList.Remove(character);
         }
     }
     public void RemoveTarget(Character character)
     {
-        targetInRangeList.Remove(character);
+        targetInSightList.Remove(character);
     }
-    public List<Character> GetTargetInRangeList()
+    public List<Character> GetTargetInSightList()
     {
-        return targetInRangeList;
+        return targetInSightList;
     }
     public int GetNumberOfTarget()
     {
-        return targetInRangeList.Count;
+        return targetInSightList.Count;
     }
 }

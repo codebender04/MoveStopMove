@@ -5,39 +5,37 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
-    private float range = 10;
-    private float speed = 2f;
+    [SerializeField] protected Transform weaponVisual;
+    [SerializeField] private WeaponSO weaponSO;
+    private Character weaponOwner;
     private Vector3 startPosition;
     private void Start()
     {
         startPosition = transform.position;
-        rb.velocity = speed * transform.forward;
+        rb.velocity = weaponSO.speed * transform.forward;
     }
-    private void Update()
+    protected virtual void Update()
     {
         CheckRange();
     }
-    public virtual void Throw(Transform throwTransform)
+    public void Initialize(Character weaponOwner)
     {
-        Instantiate(gameObject, throwTransform.position, throwTransform.rotation);
+        this.weaponOwner = weaponOwner;
     }
     private void CheckRange()
     {
         float distanceTravelled = Vector3.Distance(startPosition, transform.position);
-        if (distanceTravelled >= range)
+        if (distanceTravelled >= weaponSO.range)
         {
             OnWeaponMaxRangeReached();
         }
     }
+    public Character GetWeaponOwner()
+    {
+        return weaponOwner;
+    }
     protected virtual void OnWeaponMaxRangeReached()
     {
         Destroy(gameObject);
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(Constants.TAG_PLAYER) || other.CompareTag(Constants.TAG_BOT))
-        {
-            Destroy(gameObject);
-        }
     }
 }

@@ -9,6 +9,8 @@ public class Character : MonoBehaviour
     [SerializeField] private Transform handTransform;
     [SerializeField] protected Weapon currentWeapon;
     [SerializeField] protected Transform weaponThrowPosition;
+    [SerializeField] protected Animator animator;
+    [SerializeField] private WeaponArraySO weaponArraySO;
     private float distance;
     protected Character target;
     private void CheckClosestTarget()
@@ -34,8 +36,50 @@ public class Character : MonoBehaviour
             }
         }
     }
+    protected void SetWeapon(WeaponType weaponType)
+    {
+        currentWeapon = weaponArraySO.GetWeapon(weaponType);
+    }
+    public bool HasTargetInRange()
+    {
+        return attackRange.GetNumberOfTarget() > 0;
+    }
+    public AttackRange GetAttackRange()
+    {
+        return attackRange;
+    }
+    public void ThrowWeapon()
+    {
+        transform.rotation = Quaternion.LookRotation(target.transform.position - transform.position);
+        animator.SetBool(Constants.ANIM_ATTACK, true);
+        Instantiate(currentWeapon, weaponThrowPosition.position, weaponThrowPosition.rotation).Initialize(this);
+        Invoke(nameof(ResetAttack), 0.8f);
+    }
+    private void ResetAttack()
+    {
+        animator.SetBool(Constants.ANIM_ATTACK, false);
+    }
     protected virtual void Update()
     {
         CheckClosestTarget();
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(Constants.TAG_WEAPON))
+        {
+            Weapon weapon = other.GetComponent<Weapon>();
+            Character attacker = weapon.GetWeaponOwner();
+
+            if (attacker != this)
+            {
+                attacker.GetAttackRange().RemoveTarget(this);
+                if (attacker is Bot bot)
+                {
+                    bot.GetBotSight().RemoveTarget(this);
+                }
+                Destroy(gameObject);
+                Destroy(weapon.gameObject);
+            }
+        }
     }
 }
