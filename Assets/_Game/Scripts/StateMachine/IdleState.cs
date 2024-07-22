@@ -11,7 +11,6 @@ public class IdleState : IState<Bot>
         timer = 0f;
         randomTime = Random.Range(0.5f, 2f);
         bot.StopMovement();
-        bot.SetBoolAnim(Constants.ANIM_IDLE, true);
     }
 
     public void OnExecute(Bot bot)
@@ -29,7 +28,7 @@ public class IdleState : IState<Bot>
 
     public void OnExit(Bot bot)
     {
-        bot.SetBoolAnim(Constants.ANIM_IDLE, false);
+        
     }
 
 }

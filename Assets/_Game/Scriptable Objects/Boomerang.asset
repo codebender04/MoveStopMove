@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e16463d4672ab4ca4d96a4a6a3b26d, type: 3}
   m_Name: Boomerang
   m_EditorClassIdentifier: 
-  range: 2
+  range: 10
   speed: 4
+  skins:
+  - {fileID: 2100000, guid: baba24e2af2126e4b826c4e851fd0b81, type: 2}
+  - {fileID: 2100000, guid: e08f814b3bc43ea4a9e258bb276aa082, type: 2}

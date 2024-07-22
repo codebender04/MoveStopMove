@@ -6,7 +6,7 @@ using UnityEngine;
 public class AttackState : IState<Bot>
 {
     private float timer;
-    private float shootRate = 2f;
+    private float shootRate = 1f;
     public void OnEnter(Bot bot)
     {
         timer = 0;

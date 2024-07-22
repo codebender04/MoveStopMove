@@ -10,12 +10,23 @@ public class Bot : Character
 {
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private BotSight botSight;
+    [SerializeField] private GameObject targetedIndicator;
+    [SerializeField] private Material[] AllSkinColor;
+    [SerializeField] private SkinnedMeshRenderer meshRenderer;
     private IState<Bot> currentState;
     private Vector3 destination;
+    private enum SkinColor { Cyan = 0, Yellow = 1, Red = 2 }
+    private SkinColor skinColor;
     private void Start()
     {
         ChangeState(new PatrolState());
         RandomizeWeapon();
+        SetColor((SkinColor)Random.Range(0, Enum.GetNames(typeof(SkinColor)).Length));
+    }
+    private void SetColor(SkinColor skinColor)
+    {
+        this.skinColor = skinColor;
+        meshRenderer.material = AllSkinColor[(int)skinColor];
     }
     protected override void Update()
     {
@@ -25,6 +36,11 @@ public class Bot : Character
             currentState.OnExecute(this);
         }
     }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        BotManager.Instance.RemoveBot(this);
+    }
     private void RandomizeWeapon()
     {
         SetWeapon((WeaponType)Random.Range(0, Enum.GetNames(typeof(WeaponType)).Length));
@@ -33,9 +49,17 @@ public class Bot : Character
     {
         return botSight;
     }
-    
+    public void ShowTargetedIndicator()
+    {
+        targetedIndicator.SetActive(true);
+    }
+    public void HideTargetedIndicator()
+    {
+        targetedIndicator.SetActive(false);
+    }
     public void SetDestination(Vector3 destination)
     {
+        ChangeAnimation(Constants.ANIM_RUN);
         this.destination = destination;
         agent.SetDestination(destination);
     }
@@ -53,8 +77,9 @@ public class Bot : Character
     }
     public void StopMovement()
     {
-        SetBoolAnim(Constants.ANIM_IDLE, true);
+        //SetBoolAnim(Constants.ANIM_IDLE, true);
         SetDestination(transform.position);
+        ChangeAnimation(Constants.ANIM_IDLE);
     }
     public void ChangeState(IState<Bot> state)
     {

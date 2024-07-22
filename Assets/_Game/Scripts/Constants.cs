@@ -7,11 +7,12 @@ public static class Constants
     public const string TAG_PLAYER = "Player";
     public const string TAG_BOT = "Bot";
     public const string TAG_WEAPON = "Weapon";
-    public const string ANIM_IDLE = "IsIdle";
-    public const string ANIM_DEAD = "IsDead";
-    public const string ANIM_ATTACK = "IsAttack";
-    public const string ANIM_WIN = "IsWin";
-    public const string ANIM_DANCE = "IsDance";
-    public const string ANIM_ULTI = "IsUlti";
+    public const string ANIM_IDLE = "Idle";
+    public const string ANIM_RUN = "Run";
+    public const string ANIM_DIE = "Die";
+    public const string ANIM_ATTACK = "Attack";
+    public const string ANIM_WIN = "Win";
+    public const string ANIM_DANCE = "Dance";
+    public const string ANIM_ULTI = "Ulti";
 
 }

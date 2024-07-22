@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 10
   speed: 4
+  skins:
+  - {fileID: 2100000, guid: 0811d002d03d2a7499c9f5132a5ddc3c, type: 2}
+  - {fileID: 2100000, guid: ff8197c2b4c68e44aa4f43ce8c60fed4, type: 2}

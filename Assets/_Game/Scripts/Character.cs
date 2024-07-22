@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,10 +13,16 @@ public class Character : MonoBehaviour
     [SerializeField] protected Transform weaponThrowPosition;
     [SerializeField] protected Animator animator;
     [SerializeField] private WeaponArraySO weaponArraySO;
+    [SerializeField] private TextMeshProUGUI textMeshProUGUI;
+
+    private string currentAnimName = Constants.ANIM_IDLE;
+    private Transform currentHoldingWeapon;
+    private float growthMultiplier = 1.2f;
+    private int point;
     protected Character target;
 
     private float distance;
-    private List<AttackRange> attackRangeList = new List<AttackRange>();
+    private List<IRange> rangeList = new List<IRange>();
     private void CheckClosestTarget()
     {
         if (attackRange.GetNumberOfTarget() == 0)
@@ -38,10 +46,31 @@ public class Character : MonoBehaviour
             }
         }
     }
+    protected virtual void Grow()
+    {
+        transform.localScale *= growthMultiplier;
+    }
+
     protected void SetWeapon(WeaponType weaponType)
     {
+        if (currentHoldingWeapon != null)
+        {
+            Destroy(currentHoldingWeapon.gameObject);
+        }
         currentWeapon = weaponArraySO.GetWeapon(weaponType);
+        currentHoldingWeapon = Instantiate(currentWeapon.weaponVisual, handTransform);
     }
+
+    //WeaponBase cWeapon;
+    //protected void ChangeWeapon(WeaponType weaponType)
+    //{
+    //    if (cWeapon != null)
+    //    {
+    //        Destroy(cWeapon.gameObject);
+    //    }
+    //    cWeapon = Instantiate(weaponArraySO.GetWeapon(weaponType), handTransform); 
+    //}
+
     public bool HasTargetInRange()
     {
         return attackRange.GetNumberOfTarget() > 0;
@@ -50,20 +79,23 @@ public class Character : MonoBehaviour
     {
         return attackRange;
     }
+    private void IncreasePoint()
+    {
+        point++;
+        textMeshProUGUI.text = point.ToString();
+        if (point % 2 == 0)
+        {
+            Grow();
+        }
+    }
     public void ThrowWeapon()
     {
         transform.rotation = Quaternion.LookRotation(target.transform.position - transform.position);
-        animator.SetBool(Constants.ANIM_ATTACK, true);
+        ChangeAnimation(Constants.ANIM_ATTACK);
         Instantiate(currentWeapon, weaponThrowPosition.position, weaponThrowPosition.rotation).Initialize(this);
-        Invoke(nameof(ResetAttack), 0.8f);
-    }
-    private void ResetAttack()
-    {
-        animator.SetBool(Constants.ANIM_ATTACK, false);
-    }
-    public void SetBoolAnim(string animName, bool paramValue)
-    {
-        animator.SetBool(animName, paramValue);
+        //TODO: sua lai tach thanh attack anim -? 0.4s sau ra dan
+        //ngat attack khong sinh ra dan
+        //run luon
     }
     protected virtual void Update()
     {
@@ -78,29 +110,38 @@ public class Character : MonoBehaviour
 
             if (attacker != this)
             {
-                attacker.GetAttackRange().RemoveTarget(this);
                 if (attacker is Bot bot)
                 {
                     bot.GetBotSight().RemoveTarget(this);
                 }
+                attacker.IncreasePoint();
                 Destroy(gameObject);
                 Destroy(weapon.gameObject);
             }
         }
     }
-    private void OnDestroy()
+    protected virtual void OnDisable()
     {
-        foreach (AttackRange attackRange in attackRangeList)
+        foreach (IRange range in rangeList)
         {
-            attackRange.RemoveTarget(this);
+            range.RemoveTarget(this);
         }
     }
-    public void AddAttackRange(AttackRange attackRange)
+    public void AddRange(IRange range)
     {
-        attackRangeList.Add(attackRange);
+        rangeList.Add(range);
     }
-    public void RemoveAttackRange(AttackRange attackRange)
+    public void RemoveRange(IRange range)
     {
-        attackRangeList.Remove(attackRange);
+        rangeList.Remove(range);
+    }
+    protected void ChangeAnimation(string animName)
+    {
+        if (currentAnimName != animName)
+        {
+            animator.ResetTrigger(currentAnimName);
+            currentAnimName = animName;
+            animator.SetTrigger(animName);
+        }
     }
 }

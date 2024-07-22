@@ -54,7 +54,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 0.2, z: 1}
+  m_Size: {x: 0.5, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6134416660494610249
 Rigidbody:
@@ -96,8 +96,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6134416660494610249}
-  range: 10
-  speed: 4
   weaponVisual: {fileID: 703213772868527607}
   weaponSO: {fileID: 11400000, guid: 3c5edfe76bd56334fb880c1adcf48e6a, type: 2}
   rotatingSpeed: 360

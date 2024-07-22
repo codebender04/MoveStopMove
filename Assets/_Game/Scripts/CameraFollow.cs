@@ -15,12 +15,11 @@ public class CameraFollow : MonoBehaviour
 
     private void Player_OnPlayerGrow(object sender, System.EventArgs e)
     {
-        offset *= player.GrowthMultiplier;
+        offset *= 1.2f;
     }
 
     private void LateUpdate()
     {
-        tf.LookAt(target);
         tf.position = target.transform.position + offset;
     }
 }

@@ -8,10 +8,8 @@ public class Player : Character
     [SerializeField] private float speed;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform tf;
-    private float shootRate = 2f;
+    private float shootRate = 1f;
     private float timer = 0f;
-    private float growthMultiplier = 1.2f;
-    public float GrowthMultiplier => growthMultiplier;
     private FloatingJoystick joystick;
     private FloatingJoystick Joystick
     {
@@ -58,7 +56,6 @@ public class Player : Character
             }
         }
     }
-
     
     private void HandleMovement()
     {
@@ -67,17 +64,19 @@ public class Player : Character
         {
             rb.velocity = new Vector3(Joystick.Horizontal, rb.velocity.y, Joystick.Vertical) * speed;
             tf.rotation = Quaternion.LookRotation(rb.velocity);
-            SetBoolAnim(Constants.ANIM_IDLE, false);
+            //SetBoolAnim(Constants.ANIM_IDLE, false);
+            ChangeAnimation(Constants.ANIM_RUN);
         }
         else
         {
             rb.velocity = new Vector3 (0f, rb.velocity.y, 0f);
-            SetBoolAnim(Constants.ANIM_IDLE, true);
+            //SetBoolAnim(Constants.ANIM_IDLE, true);
+            ChangeAnimation(Constants.ANIM_IDLE);
         }
     }
-    private void Grow()
+    protected override void Grow()
     {
-        transform.localScale *= growthMultiplier;
+        base.Grow();
         OnPlayerGrow?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -8,7 +8,6 @@ public class PatrolState : IState<Bot>
 {
     public void OnEnter(Bot bot)
     {
-        bot.SetBoolAnim(Constants.ANIM_IDLE, false);
         Patrol(bot);
     }
 

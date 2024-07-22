@@ -2,23 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackRange : MonoBehaviour
+public class AttackRange : MonoBehaviour, IRange
 {
     private List<Character> targetInRangeList = new List<Character>();
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Character>(out Character character))
         {
             targetInRangeList.Add(character);
-            character.AddAttackRange(this);
+            character.AddRange(this);
         }
     }
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent<Character>(out Character character))
         {
             targetInRangeList.Remove(character);
-            character.RemoveAttackRange(this);
+            character.RemoveRange(this);
         }
     }
     public void RemoveTarget(Character character)

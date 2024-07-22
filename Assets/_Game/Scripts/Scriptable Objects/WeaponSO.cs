@@ -7,4 +7,5 @@ public class WeaponSO : ScriptableObject
 {
     public float range;
     public float speed;
+    public Material[] skins;
 }
