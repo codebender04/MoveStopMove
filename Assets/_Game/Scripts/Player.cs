@@ -8,6 +8,7 @@ public class Player : Character
     [SerializeField] private float speed;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform tf;
+    [SerializeField] private WeaponBase weapon;
     private float shootRate = 1f;
     private float timer = 0f;
     private FloatingJoystick joystick;
@@ -51,12 +52,12 @@ public class Player : Character
             timer += Time.deltaTime;
             if (timer > shootRate)
             {
-                ThrowWeapon();
+                //ThrowWeapon();
+                weapon.OnFire(transform.position, transform.rotation);
                 timer -= shootRate;
             }
         }
     }
-    
     private void HandleMovement()
     {
         if (Joystick == null) return;
