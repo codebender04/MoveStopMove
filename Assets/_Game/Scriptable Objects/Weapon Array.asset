@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Weapon Array
   m_EditorClassIdentifier: 
   weaponArray:
-  - {fileID: 4436777480652280301, guid: 98a85bf1031c4ca49bcebe4e10f4bc0e, type: 3}
-  - {fileID: 6160193945814293063, guid: 18aeb1f9ad272c54aa3dee87dea9cd64, type: 3}
-  - {fileID: -5540886055973597959, guid: a0781187b71e530498b051c178e7803c, type: 3}
+  - {fileID: 5081247201374019521, guid: e11315f5488d59747bb3800f4a2acf3a, type: 3}
+  - {fileID: 5081247201374019521, guid: c7a60d43d3fe62e49864d7c2d7d81967, type: 3}
+  - {fileID: 5081247201374019521, guid: 04088dc1c7d17b446b387f1ebe8dc0d3, type: 3}

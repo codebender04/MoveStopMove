@@ -12,7 +12,7 @@ public class Bot : Character
     [SerializeField] private BotSight botSight;
     [SerializeField] private GameObject targetedIndicator;
     [SerializeField] private Material[] AllSkinColor;
-    [SerializeField] private SkinnedMeshRenderer meshRenderer;
+    [SerializeField] private Renderer meshRenderer;
     private IState<Bot> currentState;
     private Vector3 destination;
     private enum SkinColor { Cyan = 0, Yellow = 1, Red = 2 }
@@ -36,9 +36,8 @@ public class Bot : Character
             currentState.OnExecute(this);
         }
     }
-    protected override void OnDisable()
+    protected override void Die()
     {
-        base.OnDisable();
         BotManager.Instance.RemoveBot(this);
     }
     private void RandomizeWeapon()

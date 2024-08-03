@@ -18,7 +18,7 @@ public class AttackState : IState<Bot>
         timer += Time.deltaTime;
         if (timer > shootRate)
         {
-            bot.ThrowWeapon();
+            bot.Attack();
             bot.ChangeState(new PatrolState());
         }
         if (!bot.HasTargetInRange())

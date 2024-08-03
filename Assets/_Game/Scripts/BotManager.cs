@@ -11,6 +11,7 @@ public class BotManager : Singleton<BotManager>
     [SerializeField] private NavMeshSurface navMeshSurface;
     [SerializeField] private int concurrentBotNumber;
     [SerializeField] private int totalBotNumber;
+    private int aliveBot;
     private List<Bot> botList = new List<Bot>();
     private IndicatorManager indicatorManager;
     private Bounds bounds;
@@ -28,10 +29,11 @@ public class BotManager : Singleton<BotManager>
     public List<Bot> BotList {  get { return botList; } }
     private void Awake()
     {
-        bounds = navMeshSurface.navMeshData.sourceBounds;
+        aliveBot = totalBotNumber;
     }
     private void Start()
     {
+        bounds = navMeshSurface.navMeshData.sourceBounds;
         for (int i = 0; i < concurrentBotNumber; i++)
         {
             SpawnBot();
@@ -47,21 +49,31 @@ public class BotManager : Singleton<BotManager>
                 SpawnBot();
             }
         }
+        if (GameManager.Instance.State == GameState.Playing && aliveBot == 0)
+        {
+            UIManager.Instance.Open<CanvasVictory>();
+            GameManager.Instance.State = GameState.Victory;
+        }
     }
     private void SpawnBot()
     {
         if (totalBotNumber <= 0) return;
-        Bot bot = Instantiate(botPrefab, GetRandomPosition(), Quaternion.identity);
+        Bot bot = Instantiate(botPrefab, GetRandomPosition(), Quaternion.identity, transform);
         botList.Add(bot);
-        IndicatorManager.AddIndicator();
+        if (GameManager.Instance.State == GameState.Playing)
+        {
+            IndicatorManager.AddIndicator();
+        }
         totalBotNumber--;
     }
     public void RemoveBot(Bot bot)
     {
         botList.Remove(bot);
-        if (IndicatorManager != null) IndicatorManager.RemoveIndicator();
+        aliveBot--;
+        if (GameManager.Instance.State == GameState.Playing) IndicatorManager.RemoveIndicator();
+        Destroy(bot.gameObject);
     }
-    private Vector3 GetRandomPosition()
+    private Vector3 GetRandomPositionInEdge()
     {
         Vector3 randomPosition = Vector3.zero;
         int edge = Random.Range(0, 4);
@@ -85,5 +97,17 @@ public class BotManager : Singleton<BotManager>
                 break;
         }
         return randomPosition;
+    }
+    private Vector3 GetRandomPosition()
+    {
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float y = 0;
+        float z = Random.Range(bounds.min.z, bounds.max.z);
+
+        return new Vector3(x, y, z);
+    }
+    public int GetAliveBot()
+    {
+        return aliveBot;
     }
 }

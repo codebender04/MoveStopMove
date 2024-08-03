@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e16463d4672ab4ca4d96a4a6a3b26d, type: 3}
   m_Name: Hammer
   m_EditorClassIdentifier: 
+  weaponName: Hammer
+  weaponImage: {fileID: 0}
   range: 10
   speed: 4
   skins:
   - {fileID: 2100000, guid: 1576511ebe640944bbbdf4096d12e810, type: 2}
   - {fileID: 2100000, guid: d59c85df1baf858438538d03bb2cc189, type: 2}
+  price: 0

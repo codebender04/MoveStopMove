@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Boomerang : Weapon
+public class BulletBoomerang : BulletBase
 {
     [SerializeField] private float rotatingSpeed;
     private Vector3 weaponOwnerPosition;
     protected override void Update()
     {
         base.Update();
-        weaponVisual.Rotate(0f, 0f, rotatingSpeed * Time.deltaTime);
+        bulletVisual.Rotate(0f, 0f, rotatingSpeed * Time.deltaTime);
     }
     public override void Initialize(Character weaponOwner)
     {

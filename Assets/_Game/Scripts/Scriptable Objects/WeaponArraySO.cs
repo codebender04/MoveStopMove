@@ -11,8 +11,8 @@ public enum WeaponType
 [CreateAssetMenu(menuName = "WeaponArraySO")]
 public class WeaponArraySO : ScriptableObject
 {
-    [SerializeField] private Weapon[] weaponArray;
-    public Weapon GetWeapon(WeaponType weaponType)
+    [SerializeField] private WeaponBase[] weaponArray;
+    public WeaponBase GetWeapon(WeaponType weaponType)
     {
         return weaponArray[(int)weaponType];
     }

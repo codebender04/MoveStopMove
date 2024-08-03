@@ -2,23 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
     [SerializeField] private AttackRange attackRange;
+    [SerializeField] private Transform headTrasform;
     [SerializeField] private Transform handTransform;
-    [SerializeField] protected Weapon currentWeapon;
+    [SerializeField] private Renderer pantsMeshRenderer;
+    [SerializeField] private WeaponArraySO weaponArraySO;
+    [SerializeField] private SkinArraySO skinArraySO;
+    [SerializeField] private TextMeshProUGUI textMeshProUGUI;
     [SerializeField] protected Transform weaponThrowPosition;
     [SerializeField] protected Animator animator;
-    [SerializeField] private WeaponArraySO weaponArraySO;
-    [SerializeField] private TextMeshProUGUI textMeshProUGUI;
 
     private string currentAnimName = Constants.ANIM_IDLE;
-    private Transform currentHoldingWeapon;
     private float growthMultiplier = 1.2f;
-    private int point;
+    private Pants pants;
+    private GameObject currentHat;
+    protected WeaponBase currentWeapon;
+    protected int point;
+    protected WeaponType weaponType;
     protected Character target;
 
     private float distance;
@@ -38,6 +42,7 @@ public class Character : MonoBehaviour
         float minDistance = Mathf.Infinity;
         for (int i = 0; i < attackRange.GetNumberOfTarget(); i++)
         {
+            if (attackRange.GetTargetInRangeList()[i] == null) continue;
             distance = Vector3.Distance(attackRange.GetTargetInRangeList()[i].transform.position, transform.position);
             if (distance < minDistance)
             {
@@ -50,26 +55,29 @@ public class Character : MonoBehaviour
     {
         transform.localScale *= growthMultiplier;
     }
-
-    protected void SetWeapon(WeaponType weaponType)
+    public void SetHat(Hat hat)
     {
-        if (currentHoldingWeapon != null)
+        if (currentHat != null)
         {
-            Destroy(currentHoldingWeapon.gameObject);
+            Destroy(currentHat);
         }
-        currentWeapon = weaponArraySO.GetWeapon(weaponType);
-        currentHoldingWeapon = Instantiate(currentWeapon.weaponVisual, handTransform);
+        currentHat = Instantiate(skinArraySO.GetHat(hat), headTrasform);
     }
-
-    //WeaponBase cWeapon;
-    //protected void ChangeWeapon(WeaponType weaponType)
-    //{
-    //    if (cWeapon != null)
-    //    {
-    //        Destroy(cWeapon.gameObject);
-    //    }
-    //    cWeapon = Instantiate(weaponArraySO.GetWeapon(weaponType), handTransform); 
-    //}
+    public void SetPants(Pants pants)
+    {
+        this.pants = pants;
+        SkinManager.SetSkin(pantsMeshRenderer, skinArraySO.GetPants(pants));
+    }
+    public void SetWeapon(WeaponType weaponType)
+    {
+        this.weaponType = weaponType;
+        if (currentWeapon != null)
+        {
+            Destroy(currentWeapon.gameObject);
+        }
+        currentWeapon = Instantiate(weaponArraySO.GetWeapon(weaponType), handTransform);
+        currentWeapon.Initialize(this);
+    }
 
     public bool HasTargetInRange()
     {
@@ -79,7 +87,7 @@ public class Character : MonoBehaviour
     {
         return attackRange;
     }
-    private void IncreasePoint()
+    private void OnKill()
     {
         point++;
         textMeshProUGUI.text = point.ToString();
@@ -88,14 +96,17 @@ public class Character : MonoBehaviour
             Grow();
         }
     }
-    public void ThrowWeapon()
+    //TODO: sua lai tach thanh attack anim -? 0.4s sau ra dan
+    //ngat attack khong sinh ra dan
+    //run luon
+    public void Attack()
     {
-        transform.rotation = Quaternion.LookRotation(target.transform.position - transform.position);
-        ChangeAnimation(Constants.ANIM_ATTACK);
-        Instantiate(currentWeapon, weaponThrowPosition.position, weaponThrowPosition.rotation).Initialize(this);
-        //TODO: sua lai tach thanh attack anim -? 0.4s sau ra dan
-        //ngat attack khong sinh ra dan
-        //run luon
+        if (target != null)
+        {
+            transform.rotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            ChangeAnimation(Constants.ANIM_ATTACK);
+            currentWeapon.OnFire(weaponThrowPosition);
+        }
     }
     protected virtual void Update()
     {
@@ -105,20 +116,26 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag(Constants.TAG_WEAPON))
         {
-            Weapon weapon = other.GetComponent<Weapon>();
+            BulletBase weapon = other.GetComponent<BulletBase>();
             Character attacker = weapon.GetWeaponOwner();
 
             if (attacker != this)
             {
-                if (attacker is Bot bot)
+                if (attacker is Bot bot && attacker != null)
                 {
                     bot.GetBotSight().RemoveTarget(this);
                 }
-                attacker.IncreasePoint();
-                Destroy(gameObject);
+                if (attacker != null)
+                {
+                    attacker.OnKill();
+                }
+                Die();
                 Destroy(weapon.gameObject);
             }
         }
+    }
+    protected virtual void Die()
+    {
     }
     protected virtual void OnDisable()
     {
@@ -141,7 +158,7 @@ public class Character : MonoBehaviour
         {
             animator.ResetTrigger(currentAnimName);
             currentAnimName = animName;
-            animator.SetTrigger(animName);
+            animator.SetTrigger(currentAnimName);
         }
     }
 }

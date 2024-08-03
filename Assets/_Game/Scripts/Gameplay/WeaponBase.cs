@@ -7,23 +7,21 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] private BulletBase bulletBasePrefab;
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] protected WeaponSO weaponSO;
+    public int ColorableParts => meshRenderer.materials.Length;
+
     protected Character weaponOwner;
-    private void Start()
+    public void OnFire(Transform fireTransform)
     {
-        SetSkin(0);
+        Instantiate(bulletBasePrefab, fireTransform.position, fireTransform.rotation).Initialize(weaponOwner);
     }
-    public void OnFire(Vector3 pos, Quaternion rot)
+    public void SetSkin(int skinIndex)
     {
-        Instantiate(bulletBasePrefab, pos, rot).Initialize(weaponOwner);
+        bulletBasePrefab.SetSkin(SkinManager.SetSkin(meshRenderer, weaponSO.skins[skinIndex]));
     }
-    private void SetSkin(int skinIndex)
+    public void SetColor(int colorablePartIndex, Material color)
     {
-        Material[] skinMaterials = new Material[meshRenderer.materials.Length];
-        for (int i = 0; i < skinMaterials.Length; i++)
-        {
-            skinMaterials[i] = weaponSO.skins[skinIndex];
-        }
-        meshRenderer.materials = skinMaterials;
+        meshRenderer.materials[colorablePartIndex] = color;
+        bulletBasePrefab.SetColor(colorablePartIndex, color);
     }
     public virtual void Initialize(Character weaponOwner)
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IndicatorManager : MonoBehaviour
+public class IndicatorManager : Singleton<IndicatorManager>
 {
     [SerializeField] private GameObject indicator;
     [SerializeField] private Canvas canvas;
@@ -20,8 +20,16 @@ public class IndicatorManager : MonoBehaviour
             UpdateIndicator(indicatorList[i], BotManager.Instance.BotList[i]);
         }
     }
+    public void ClearIndicator()
+    {
+        while (indicatorList.Count > 0)
+        {
+            RemoveIndicator();
+        }
+    }
     public void AddIndicator()
     {
+        if (indicatorList.Count >= BotManager.Instance.BotList.Count) return;
         GameObject indicator = Instantiate(this.indicator, transform);
         indicatorList.Add(indicator);
     }

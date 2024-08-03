@@ -8,9 +8,13 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private Vector3 offset;
     [SerializeField] private Player player;
-    private void Start()
+    private void OnEnable()
     {
         player.OnPlayerGrow += Player_OnPlayerGrow;
+    }
+    private void OnDisable()
+    {
+        player.OnPlayerGrow -= Player_OnPlayerGrow;
     }
 
     private void Player_OnPlayerGrow(object sender, System.EventArgs e)

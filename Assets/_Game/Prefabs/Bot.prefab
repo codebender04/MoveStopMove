@@ -459,8 +459,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 6
-  m_Acceleration: 8
+  m_Speed: 8
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -484,12 +484,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: {fileID: 2765631352189316251}
+  headTrasform: {fileID: 1622766330436413896}
   handTransform: {fileID: 1047119964436842201}
-  currentWeapon: {fileID: 4436777480652280301, guid: 98a85bf1031c4ca49bcebe4e10f4bc0e, type: 3}
+  pantsMeshRenderer: {fileID: 2693370032053664041}
+  weaponArraySO: {fileID: 11400000, guid: 7ffc175c7cddede408c36de8711bbc10, type: 2}
+  pantsArraySO: {fileID: 0}
+  textMeshProUGUI: {fileID: 2525521296314295852}
   weaponThrowPosition: {fileID: 836165751792834633}
   animator: {fileID: 8518428375787777216}
-  weaponArraySO: {fileID: 11400000, guid: 7ffc175c7cddede408c36de8711bbc10, type: 2}
-  textMeshProUGUI: {fileID: 2525521296314295852}
   agent: {fileID: 2781122977638012034}
   botSight: {fileID: 664657046761187662}
   targetedIndicator: {fileID: 5752192164528441740}
@@ -888,9 +890,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -3220319501169496967, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 6757438444718074528}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1622766330436413896 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3800467336962686104, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 6757438444718074528}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1782733550544781754 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 6757438444718074528}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2693370032053664041 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 6757438444718074528}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &6521731540265417802 stripped

@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   botPrefab: {fileID: 6872366232996065581, guid: 543ff6f900c081e479daf243b85e6632, type: 3}
   navMeshSurface: {fileID: 4763311025320255189}
-  concurrentBotNumber: 6
-  totalBotNumber: 10
+  concurrentBotNumber: 8
+  totalBotNumber: 16
 --- !u!1 &2058404741806119639
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,8 +77,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 881964857784577408}
   - {fileID: 212396999630024591}
+  - {fileID: 881964857784577408}
   - {fileID: 9147416648616480392}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
