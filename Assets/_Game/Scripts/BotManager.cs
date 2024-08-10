@@ -51,8 +51,7 @@ public class BotManager : Singleton<BotManager>
         }
         if (GameManager.Instance.State == GameState.Playing && aliveBot == 0)
         {
-            UIManager.Instance.Open<CanvasVictory>();
-            GameManager.Instance.State = GameState.Victory;
+            GameManager.Instance.OnPlayerVictory();
         }
     }
     private void SpawnBot()
@@ -71,7 +70,6 @@ public class BotManager : Singleton<BotManager>
         botList.Remove(bot);
         aliveBot--;
         if (GameManager.Instance.State == GameState.Playing) IndicatorManager.RemoveIndicator();
-        Destroy(bot.gameObject);
     }
     private Vector3 GetRandomPositionInEdge()
     {

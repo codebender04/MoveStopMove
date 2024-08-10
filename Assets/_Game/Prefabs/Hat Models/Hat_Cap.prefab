@@ -64,9 +64,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 72e9b270471e48a479051d3b196a7e06, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: de367ce2e0ea06c47802543018796f5d, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 72e9b270471e48a479051d3b196a7e06, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2db7359b6d3fffc4a8978eea605b81d8, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 72e9b270471e48a479051d3b196a7e06, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: e47164c2ee422b24986d88a84740bb17, type: 2}
     - target: {fileID: -927199367670048503, guid: 72e9b270471e48a479051d3b196a7e06, type: 3}
       propertyPath: m_Name
       value: Hat_Cap
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 72e9b270471e48a479051d3b196a7e06, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

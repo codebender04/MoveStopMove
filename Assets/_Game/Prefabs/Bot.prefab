@@ -414,7 +414,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -444,7 +444,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
@@ -486,10 +486,11 @@ MonoBehaviour:
   attackRange: {fileID: 2765631352189316251}
   headTrasform: {fileID: 1622766330436413896}
   handTransform: {fileID: 1047119964436842201}
-  pantsMeshRenderer: {fileID: 2693370032053664041}
   weaponArraySO: {fileID: 11400000, guid: 7ffc175c7cddede408c36de8711bbc10, type: 2}
-  pantsArraySO: {fileID: 0}
-  textMeshProUGUI: {fileID: 2525521296314295852}
+  skinArraySO: {fileID: 11400000, guid: 6bc12b36f6dc38149bebcfe49677c9c4, type: 2}
+  pointText: {fileID: 2525521296314295852}
+  pantsMeshRenderer: {fileID: 2693370032053664041}
+  characterRenderer: {fileID: 6521731540265417802}
   weaponThrowPosition: {fileID: 836165751792834633}
   animator: {fileID: 8518428375787777216}
   agent: {fileID: 2781122977638012034}
@@ -499,7 +500,10 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6db97e95a391c824089cad1ef04d10ff, type: 2}
   - {fileID: 2100000, guid: b6f1e7744ff4b75438498a2e8582b12f, type: 2}
   - {fileID: 2100000, guid: 31e305b345805dc41805dca9332c7519, type: 2}
-  meshRenderer: {fileID: 6521731540265417802}
+  - {fileID: 2100000, guid: 2db7359b6d3fffc4a8978eea605b81d8, type: 2}
+  - {fileID: 2100000, guid: de367ce2e0ea06c47802543018796f5d, type: 2}
+  - {fileID: 2100000, guid: 6627f047f2529c6498fe1d2e772a8b41, type: 2}
+  - {fileID: 2100000, guid: 12113bae0a8cbd444ab1ea6a4ed613a7, type: 2}
 --- !u!1 &5752192164528441740
 GameObject:
   m_ObjectHideFlags: 0

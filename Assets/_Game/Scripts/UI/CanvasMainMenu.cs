@@ -9,10 +9,9 @@ public class CanvasMainMenu : UICanvas
     private Player player;
     private void OnEnable()
     {
-        if (player == null)
-        {
-            player = FindObjectOfType<Player>();
-        }
+        if (player == null) player = FindObjectOfType<Player>();
+        
+        goldText.text = player.GetGold().ToString();
         player.OnGoldChanged += Player_OnGoldChanged;    
     }
     private void OnDisable()
@@ -27,7 +26,7 @@ public class CanvasMainMenu : UICanvas
     {
         Close(0);
         UIManager.Instance.Open<CanvasGameplay>();
-        LevelManager.Instance.LoadLevel();
+        LevelManager.Instance.LoadCurrentLevel();
     }
     public void WeaponShopButton()
     {

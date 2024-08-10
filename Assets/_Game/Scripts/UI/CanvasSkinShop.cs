@@ -1,48 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasSkinShop : UICanvas
 {
-    [SerializeField] private GameObject[] tabArray;
-    [SerializeField] private Transform headTransform;
-    [SerializeField] private Renderer pantsRenderer;
+    [SerializeField] private Tab[] tabArray;
+    [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private SkinArraySO skinArraySO;
-    private GameObject currentHat;
     private Player player;
+    private int currentTabIndex = 0;
     private void OnEnable()
     {
-        if (player == null) { player = FindObjectOfType<Player>(); }
+        if (player == null) player = FindObjectOfType<Player>(); 
+
+        goldText.text = player.GetGold().ToString();
+        player.OnGoldChanged += Player_OnGoldChanged;
     }
+
+    private void Player_OnGoldChanged(object sender, Player.OnGoldChangedEventArgs e)
+    {
+        goldText.text = e.gold.ToString();
+    }
+
     public void SelectTab(int tabIndex)
     {
         for (int i = 0; i < tabArray.Length; i++)
         {
-            tabArray[i].SetActive(false);
+            tabArray[i].gameObject.SetActive(false);
         }
-        tabArray[tabIndex].SetActive(true);
+        tabArray[tabIndex].gameObject.SetActive(true);
+        currentTabIndex = tabIndex;
     }
-    public void SelectPants(int pants)
+    private void UpdateSkinShopUI()
     {
-        player.SetPants((Pants)pants);
-        SetPlayerModelPants((Pants)pants);
+        tabArray[currentTabIndex].UpdateTabUI();
     }
-    public void SelectHat(int hat)
+    public void BuyButton()
     {
-        player.SetHat((Hat)hat);
-        SetPlayerModelHat((Hat)hat);
+        tabArray[currentTabIndex].BuyButton();
+
+        UpdateSkinShopUI();
     }
-    private void SetPlayerModelHat(Hat hat)
+    public void SelectButton()
     {
-        if (currentHat != null)
-        {
-            Destroy(currentHat);
-        }
-        currentHat = Instantiate(skinArraySO.GetHat(hat), headTransform);
-        currentHat.layer = 9;
-    }
-    private void SetPlayerModelPants(Pants pants)
-    {
-        pantsRenderer.material = skinArraySO.GetPants(pants);
+        tabArray[currentTabIndex].SelectButton();
+
+        UpdateSkinShopUI();
     }
 }

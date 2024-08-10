@@ -6,6 +6,8 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Player player;
     public GameState State = GameState.Playing;
+    public int PlayerGold => player.GetGold();
+    public int PlayerPoint => player.GetPoint();
     private List<ISaveable> saveables;
     private void Awake()
     {
@@ -20,12 +22,20 @@ public class GameManager : Singleton<GameManager>
     private void Player_OnPlayerDeath(object sender, System.EventArgs e)
     {
         IndicatorManager.Instance.ClearIndicator();
-        UIManager.Instance.CloseAll();
         if (State == GameState.Playing)
         {
+            State = GameState.Lose;
+            UIManager.Instance.CloseAll();
             UIManager.Instance.Open<CanvasLose>();
-            State = GameState.Lose; 
         }
+    }
+    public void OnPlayerVictory()
+    {
+        State = GameState.Victory;
+        player.StopMovement();
+        UIManager.Instance.CloseAll();
+        UIManager.Instance.Open<CanvasVictory>();
+        
     }
     private void OnApplicationQuit()
     {

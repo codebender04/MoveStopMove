@@ -11,27 +11,40 @@ public class CanvasWeaponShop : UICanvas
     [SerializeField] private Transform handTransform;
     [SerializeField] private Button selectButton;
     [SerializeField] private Button buyButton;
+    [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI weaponNameText;
     [SerializeField] private TextMeshProUGUI selectText;
     [SerializeField] private GameObject[] shopWeaponModels;
     [SerializeField] private GameObject[] playerWeaponModels;
+    [SerializeField] private GameObject[] colorablePartsButtons;
     [SerializeField] private GameObject customizeUI;
+    [SerializeField] private Image[] skinButtonImage;
     private Player player;
     private int currentWeaponIndex = 0;
     private bool[] WeaponsPurchased => player.WeaponsPurchased;
+    private int[] skinIndexArray = new int[3] {0, 0, 0};
     private int selectedWeaponIndex;
     private int selectedSkinIndex;
-    private int[] skinIndexArray = new int[3] {0, 0, 0};
+    private int colorablePartIndex = 0;
     private void OnEnable()
     {
         if (player == null) player = FindObjectOfType<Player>();
+
+        goldText.text = player.GetGold().ToString();
+        player.OnGoldChanged += Player_OnGoldChanged;
 
         currentWeaponIndex = (int)player.GetWeaponType();
         selectedWeaponIndex = currentWeaponIndex;
         selectedSkinIndex = player.GetCurrentSkinIndex();
         SelectSkinButton(selectedSkinIndex);
     }
+
+    private void Player_OnGoldChanged(object sender, Player.OnGoldChangedEventArgs e)
+    {
+        goldText.text = e.gold.ToString();
+    }
+
     public void ShowPreviousWeapon()
     {
         currentWeaponIndex--;
@@ -39,7 +52,7 @@ public class CanvasWeaponShop : UICanvas
         {
             currentWeaponIndex = shopWeaponModels.Length - 1;
         }
-        UpdateWeaponUI();
+        UpdateWeaponShopUI();
     }
     public void ShowNextWeapon() 
     {
@@ -48,9 +61,9 @@ public class CanvasWeaponShop : UICanvas
         {
             currentWeaponIndex = 0;
         }
-        UpdateWeaponUI();
+        UpdateWeaponShopUI();
     }
-    private void UpdateWeaponUI()
+    private void UpdateWeaponShopUI()
     {
         for (int i = 0; i < shopWeaponModels.Length; i++)
         {
@@ -59,6 +72,8 @@ public class CanvasWeaponShop : UICanvas
             SkinManager.SetSkin(meshRenderer, weaponSOList[currentWeaponIndex].skins[skinIndexArray[currentWeaponIndex]]);
         }
         customizeUI.SetActive(false);
+        skinButtonImage[0].sprite = weaponSOList[currentWeaponIndex].skinIcons[0];
+        skinButtonImage[1].sprite = weaponSOList[currentWeaponIndex].skinIcons[1];
 
         weaponNameText.text = weaponSOList[currentWeaponIndex].name.ToUpper();
         priceText.text = weaponSOList[currentWeaponIndex].price.ToString();
@@ -74,14 +89,26 @@ public class CanvasWeaponShop : UICanvas
     }
     public void CustomSkinButton()
     {
-        UpdateWeaponUI();
+        UpdateWeaponShopUI();
         customizeUI.SetActive(true);
+        for (int i = 0; i < colorablePartsButtons.Length; i++)
+        {
+            colorablePartsButtons[i].SetActive(i < weaponSOList[currentWeaponIndex].colorableParts);
+        }
+    }
+    public void SelectColorWeapon(int colorIndex)
+    {
+        
+    }
+    public void SelectColorablePart(int colorablePartIndex)
+    {
+        this.colorablePartIndex = colorablePartIndex;
     }
     public void BuyButton()
     {
         player.UpdateGold(-weaponSOList[currentWeaponIndex].price);
         WeaponsPurchased[currentWeaponIndex] = true;
-        UpdateWeaponUI();
+        UpdateWeaponShopUI();
     }
     public void SelectButton()
     {
@@ -90,13 +117,13 @@ public class CanvasWeaponShop : UICanvas
         selectedWeaponIndex = currentWeaponIndex;
         selectedSkinIndex = skinIndexArray[currentWeaponIndex];
 
-        UpdateWeaponUI();
+        UpdateWeaponShopUI();
     }
     public void SelectSkinButton(int skinIndex)
     {
         skinIndexArray[currentWeaponIndex] = skinIndex;
         
-        UpdateWeaponUI();
+        UpdateWeaponShopUI();
     }
     private void SetPlayerWeaponModel()
     {

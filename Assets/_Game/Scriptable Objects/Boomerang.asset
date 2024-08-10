@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Boomerang
   m_EditorClassIdentifier: 
   weaponName: Boomerang
-  weaponImage: {fileID: 0}
-  range: 4
+  range: 6
   speed: 4
   skins:
   - {fileID: 2100000, guid: baba24e2af2126e4b826c4e851fd0b81, type: 2}
   - {fileID: 2100000, guid: e08f814b3bc43ea4a9e258bb276aa082, type: 2}
+  skinIcons:
+  - {fileID: 21300000, guid: d8f28d72656cea24a99b33fa38816f71, type: 3}
+  - {fileID: 21300000, guid: d3b448f5088958e40bef69e4f3193f84, type: 3}
   price: 200
+  colorableParts: 1

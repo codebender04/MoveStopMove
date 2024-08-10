@@ -25,7 +25,11 @@ public class Player : Character, ISaveable
     private float shootRate = 1f;
     private float timer = 0f;
     private int currentWeaponSkinIndex;
+    private Color skinColor;
+
     public bool[] WeaponsPurchased = new bool[3] { true, false, false };
+    public bool[] HatsPurchased = new bool[11] { true, false, false ,false, false, false, false, false, false, false, false };
+    public bool[] PantsPurchased = new bool[9] { false, false, false, false, false, false, false, false, false };
 
     private FloatingJoystick joystick;
     private FloatingJoystick Joystick
@@ -41,30 +45,15 @@ public class Player : Character, ISaveable
     }
     private void Start()
     {
+        skinColor = characterRenderer.material.color;
         UpdateGold(0);
-        SetHat(Hat.None);
     }
     protected override void Update()
     {
         base.Update();
+        if (isDead) return;
         HandleInput();
         HandleThrowingWeapon();
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Grow();
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            SetWeapon(WeaponType.hammer);
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            SetWeapon(WeaponType.knife);
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SetWeapon(WeaponType.boomerang);
-        }
         if (Input.GetKeyDown(KeyCode.W))
         {
             UpdateGold(100);
@@ -76,9 +65,12 @@ public class Player : Character, ISaveable
     }
     public void Initialize()
     {
+        isDead = false;
         transform.position = Vector3.zero;
+        transform.localScale = Vector3.one;
         gameObject.SetActive(true);
-
+        point = 0;
+        pointText.text = "0";
     }
     public void UpdateGold(int amount)
     {
@@ -126,7 +118,7 @@ public class Player : Character, ISaveable
                 CancelAttack();
             }
             currentState = PlayerState.Moving;
-            rb.velocity = new Vector3(Joystick.Horizontal, rb.velocity.y, Joystick.Vertical) * speed;
+            rb.velocity = new Vector3(Joystick.Horizontal, 0f, Joystick.Vertical) * speed;
             tf.rotation = Quaternion.LookRotation(rb.velocity);
             ChangeAnimation(Constants.ANIM_RUN);
         }
@@ -137,8 +129,12 @@ public class Player : Character, ISaveable
                 currentState = PlayerState.Idling;
                 ChangeAnimation(Constants.ANIM_IDLE);
             }
-            rb.velocity = new Vector3 (0f, rb.velocity.y, 0f);
+            rb.velocity = new Vector3 (0f, 0f, 0f);
         }
+    }
+    public void StopMovement()
+    {
+        rb.velocity = Vector3.zero;
     }
     public void SetWeaponSkin(int index)
     {
@@ -156,9 +152,20 @@ public class Player : Character, ISaveable
     }
     protected override void Die()
     {
-        gameObject.SetActive(false);
+        base.Die();
+        rb.velocity = Vector3.zero;
+        ChangeAnimation(Constants.ANIM_DIE);
         UpdateGold(point);
+        Invoke(nameof(Despawn), 1.5f);
+    }
+    private void Despawn()
+    {
+        gameObject.SetActive(false);
         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+    }
+    public int GetPoint()
+    {
+        return point;
     }
     public int GetGold()
     {
@@ -177,13 +184,21 @@ public class Player : Character, ISaveable
         saveData.gold = gold;
         saveData.currentSkinIndex = currentWeaponSkinIndex;
         saveData.currentWeaponIndex = (int)weaponType;
+        saveData.currentHatIndex = (int)hat;
+        saveData.currentPantsIndex = (int)pants;
         saveData.weaponsPurchased = (bool[])WeaponsPurchased.Clone();
+        saveData.hatsPurchased = (bool[])HatsPurchased.Clone();
+        saveData.pantsPurchased = (bool[])PantsPurchased.Clone();
     }
     public void LoadFromSaveData(SaveData saveData)
     {
         gold = saveData.gold;
         SetWeapon((WeaponType)saveData.currentWeaponIndex);
         SetWeaponSkin(saveData.currentSkinIndex);
+        SetHat((Hat)saveData.currentHatIndex);
+        SetPants((Pants)saveData.currentPantsIndex);
         WeaponsPurchased = (bool[])saveData.weaponsPurchased.Clone();
+        HatsPurchased = (bool[])saveData.hatsPurchased.Clone();
+        PantsPurchased = (bool[])saveData.pantsPurchased.Clone();
     }
 }

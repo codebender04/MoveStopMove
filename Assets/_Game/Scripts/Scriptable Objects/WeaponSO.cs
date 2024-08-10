@@ -9,5 +9,7 @@ public class WeaponSO : ScriptableObject
     public float range;
     public float speed;
     public Material[] skins;
+    public Sprite[] skinIcons;
     public int price;
+    public int colorableParts;
 }

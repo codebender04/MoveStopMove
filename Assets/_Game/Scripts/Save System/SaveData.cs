@@ -7,7 +7,11 @@ public class SaveData
     public int gold;
     public int currentWeaponIndex;
     public int currentSkinIndex;
+    public int currentHatIndex;
+    public int currentPantsIndex;
     public bool[] weaponsPurchased;
+    public bool[] hatsPurchased;
+    public bool[] pantsPurchased;
     public string ToJson()
     {
         return JsonUtility.ToJson(this);

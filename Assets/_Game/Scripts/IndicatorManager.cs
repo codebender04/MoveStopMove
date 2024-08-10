@@ -15,6 +15,15 @@ public class IndicatorManager : Singleton<IndicatorManager>
     }
     void Update()
     {
+        if (GameManager.Instance.State != GameState.Playing)
+        {
+            return;
+        }
+        //Debug.Log(indicatorList.Count + " - " + BotManager.Instance.BotList.Count);
+        while (indicatorList.Count < BotManager.Instance.BotList.Count)
+        {
+            AddIndicator();
+        }
         for (int i = 0; i < BotManager.Instance.BotList.Count; i++)
         {
             UpdateIndicator(indicatorList[i], BotManager.Instance.BotList[i]);

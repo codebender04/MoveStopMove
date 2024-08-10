@@ -9,21 +9,24 @@ public class Character : MonoBehaviour
     [SerializeField] private AttackRange attackRange;
     [SerializeField] private Transform headTrasform;
     [SerializeField] private Transform handTransform;
-    [SerializeField] private Renderer pantsMeshRenderer;
     [SerializeField] private WeaponArraySO weaponArraySO;
     [SerializeField] private SkinArraySO skinArraySO;
-    [SerializeField] private TextMeshProUGUI textMeshProUGUI;
+    [SerializeField] protected TextMeshProUGUI pointText;
+    [SerializeField] protected Renderer pantsMeshRenderer;
+    [SerializeField] protected Renderer characterRenderer;
     [SerializeField] protected Transform weaponThrowPosition;
     [SerializeField] protected Animator animator;
 
     private string currentAnimName = Constants.ANIM_IDLE;
     private float growthMultiplier = 1.2f;
-    private Pants pants;
-    private GameObject currentHat;
+    protected GameObject currentHat;
+    protected Pants pants;
+    protected Hat hat;
     protected WeaponBase currentWeapon;
-    protected int point;
+    protected int point = 0;
     protected WeaponType weaponType;
     protected Character target;
+    protected bool isDead = false;
 
     private float distance;
     private List<IRange> rangeList = new List<IRange>();
@@ -57,6 +60,7 @@ public class Character : MonoBehaviour
     }
     public void SetHat(Hat hat)
     {
+        this.hat = hat;
         if (currentHat != null)
         {
             Destroy(currentHat);
@@ -66,7 +70,7 @@ public class Character : MonoBehaviour
     public void SetPants(Pants pants)
     {
         this.pants = pants;
-        SkinManager.SetSkin(pantsMeshRenderer, skinArraySO.GetPants(pants));
+        pantsMeshRenderer.material = skinArraySO.GetPants(pants);
     }
     public void SetWeapon(WeaponType weaponType)
     {
@@ -90,15 +94,12 @@ public class Character : MonoBehaviour
     private void OnKill()
     {
         point++;
-        textMeshProUGUI.text = point.ToString();
+        pointText.text = point.ToString();
         if (point % 2 == 0)
         {
             Grow();
         }
     }
-    //TODO: sua lai tach thanh attack anim -? 0.4s sau ra dan
-    //ngat attack khong sinh ra dan
-    //run luon
     public void Attack()
     {
         if (target != null)
@@ -110,10 +111,12 @@ public class Character : MonoBehaviour
     }
     protected virtual void Update()
     {
+        if (isDead) return;
         CheckClosestTarget();
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (isDead) return;
         if (other.CompareTag(Constants.TAG_WEAPON))
         {
             BulletBase weapon = other.GetComponent<BulletBase>();
@@ -121,10 +124,6 @@ public class Character : MonoBehaviour
 
             if (attacker != this)
             {
-                if (attacker is Bot bot && attacker != null)
-                {
-                    bot.GetBotSight().RemoveTarget(this);
-                }
                 if (attacker != null)
                 {
                     attacker.OnKill();
@@ -136,12 +135,19 @@ public class Character : MonoBehaviour
     }
     protected virtual void Die()
     {
-    }
-    protected virtual void OnDisable()
-    {
+        isDead = true;
         foreach (IRange range in rangeList)
         {
             range.RemoveTarget(this);
+        }
+    }
+    protected void DarkenColor(float darkenMultiplier)
+    {
+        characterRenderer.material.color = characterRenderer.material.color * darkenMultiplier;
+        pantsMeshRenderer.material.color = characterRenderer.material.color * darkenMultiplier;
+        if (currentHat.TryGetComponent(out Renderer hatRenderer))
+        {
+            hatRenderer.material.color = hatRenderer.material.color * darkenMultiplier;
         }
     }
     public void AddRange(IRange range)
