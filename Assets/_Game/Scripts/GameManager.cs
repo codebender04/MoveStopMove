@@ -32,7 +32,7 @@ public class GameManager : Singleton<GameManager>
     public void OnPlayerVictory()
     {
         State = GameState.Victory;
-        player.StopMovement();
+        player.OnVictory();
         UIManager.Instance.CloseAll();
         UIManager.Instance.Open<CanvasVictory>();
         

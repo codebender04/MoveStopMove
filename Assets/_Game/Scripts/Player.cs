@@ -66,7 +66,8 @@ public class Player : Character, ISaveable
     public void Initialize()
     {
         isDead = false;
-        transform.position = Vector3.zero;
+        rb.velocity = Vector3.zero;
+        rb.position = Vector3.zero;
         transform.localScale = Vector3.one;
         gameObject.SetActive(true);
         point = 0;
@@ -132,7 +133,7 @@ public class Player : Character, ISaveable
             rb.velocity = new Vector3 (0f, 0f, 0f);
         }
     }
-    public void StopMovement()
+    private void StopMovement()
     {
         rb.velocity = Vector3.zero;
     }
@@ -153,10 +154,15 @@ public class Player : Character, ISaveable
     protected override void Die()
     {
         base.Die();
-        rb.velocity = Vector3.zero;
+        StopMovement();
         ChangeAnimation(Constants.ANIM_DIE);
         UpdateGold(point);
         Invoke(nameof(Despawn), 1.5f);
+    }
+    public void OnVictory()
+    {
+        StopMovement();
+        ChangeAnimation(Constants.ANIM_DANCE);
     }
     private void Despawn()
     {

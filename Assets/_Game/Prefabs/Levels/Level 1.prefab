@@ -1363,6 +1363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7386195309117412462}
+  - component: {fileID: 2916671682454638629}
   m_Layer: 0
   m_Name: Cup
   m_TagString: Untagged
@@ -1386,6 +1387,27 @@ Transform:
   - {fileID: 1197968337751894924}
   m_Father: {fileID: 8501080683994423085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2916671682454638629
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9066419045428326064}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.1124682, y: 3.4729576, z: 2.9562697}
+  m_Center: {x: 0, y: 1.236479, z: 0}
 --- !u!1001 &1669340840404749415
 PrefabInstance:
   m_ObjectHideFlags: 0
