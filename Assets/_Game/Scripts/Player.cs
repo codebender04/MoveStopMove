@@ -7,8 +7,8 @@ using UnityEngine;
 public class Player : Character, ISaveable
 {
     public event EventHandler OnPlayerGrow;
-    public event EventHandler<OnGoldChangedEventArgs> OnGoldChanged;
     public event EventHandler OnPlayerDeath;
+    public event EventHandler<OnGoldChangedEventArgs> OnGoldChanged;
     public class OnGoldChangedEventArgs : EventArgs { public int gold; }
 
     [SerializeField] private float speed;
@@ -19,6 +19,7 @@ public class Player : Character, ISaveable
         Idling = 0,
         Moving = 1,
         Attacking = 2,
+        Died = 3,
     }
     private PlayerState currentState = PlayerState.Idling;
     private int gold;
@@ -66,6 +67,7 @@ public class Player : Character, ISaveable
     public void Initialize()
     {
         isDead = false;
+        currentState = PlayerState.Idling;
         rb.velocity = Vector3.zero;
         rb.position = Vector3.zero;
         transform.localScale = Vector3.one;
@@ -154,6 +156,7 @@ public class Player : Character, ISaveable
     protected override void Die()
     {
         base.Die();
+        currentState = PlayerState.Died;
         StopMovement();
         ChangeAnimation(Constants.ANIM_DIE);
         UpdateGold(point);
@@ -161,6 +164,7 @@ public class Player : Character, ISaveable
     }
     public void OnVictory()
     {
+        UpdateGold(point);
         StopMovement();
         ChangeAnimation(Constants.ANIM_DANCE);
     }
